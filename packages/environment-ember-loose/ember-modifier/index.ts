@@ -4,7 +4,7 @@ import type {
   BoundModifier,
   EmptyObject,
 } from '@glint/template/-private/integration';
-import type { StaticSide } from '../-private/utilities';
+import type { StaticSide, WithoutGlintIntegration } from '../-private/utilities';
 
 const EmberModifier = window.require('ember-modifier').default;
 type EmberModifier<T> = import('ember-modifier').default<T>;
@@ -43,11 +43,25 @@ type ModifierConstructor = {
 const Modifier = EmberModifier as StaticSide<EmberModifierConstructor> & ModifierConstructor;
 
 interface Modifier<T extends ModifierSignature>
-  extends EmberModifier<{
-    named: Extract<Get<T, 'NamedArgs'>, Record<string, any>>;
-    positional: Extract<Get<T, 'PositionalArgs', []>, any[]>;
-  }> {
+  extends WithoutGlintIntegration<
+    EmberModifier<{
+      named: Extract<Get<T, 'NamedArgs'>, Record<string, any>>;
+      positional: Extract<Get<T, 'PositionalArgs', []>, any[]>;
+    }>
+  > {
   readonly element: Get<T, 'Element', Element>;
+
+  // The `WithoutGlintIntegration` mapped type convinces TS that these
+  // methods are actually defined as properties, which causes errors
+  // when users actually implement them in a subclass, so we redeclare
+  // them correctly here. Anyone who's already jumped to modify by
+  // definition can't have been using the modifier with Glint yet,
+  // since the signatures weren't compatible.
+  didReceiveArguments(): void;
+  didUpdateArguments(): void;
+  didInstall(): void;
+  willRemove(): void;
+  willDestroy(): void;
 
   // Allows `extends Modifier<infer Signature>` clauses to work as expected
   [GivenSignature]: T;

@@ -1,6 +1,6 @@
 import { Ember } from './-ember';
 import type { Invoke, Invokable, EmptyObject } from '@glint/template/-private/integration';
-import type { StaticSide } from '../-private/utilities';
+import type { StaticSide, WithoutGlintIntegration } from '../-private/utilities';
 
 declare const GivenSignature: unique symbol;
 
@@ -38,7 +38,8 @@ type HelperConstructor = {
 // extending here so our override can "take" without an error.
 const Helper = EmberHelper as unknown as StaticSide<typeof EmberHelper> & HelperConstructor;
 
-interface Helper<T extends HelperSignature> extends Omit<EmberHelper, 'compute'> {
+interface Helper<T extends HelperSignature>
+  extends WithoutGlintIntegration<Omit<EmberHelper, 'compute'>> {
   compute(
     params: Get<T, 'PositionalArgs', []>,
     hash: Get<T, 'NamedArgs'>

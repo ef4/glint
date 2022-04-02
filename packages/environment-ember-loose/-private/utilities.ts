@@ -1,9 +1,20 @@
-import { AcceptsBlocks, EmptyObject, Invokable } from '@glint/template/-private/integration';
+import {
+  AcceptsBlocks,
+  Context,
+  EmptyObject,
+  Invokable,
+  Invoke,
+  InvokeDirect,
+} from '@glint/template/-private/integration';
 
 type Constructor<T> = new (...params: any) => T;
 type Get<T, K, Otherwise = EmptyObject> = K extends keyof T ? Exclude<T[K], undefined> : Otherwise;
 
 export type StaticSide<T> = { [K in Exclude<keyof T, 'prototype'>]: T[K] };
+export type WithoutGlintIntegration<T> = Pick<
+  T,
+  Exclude<keyof T, typeof Invoke | typeof Context | typeof InvokeDirect>
+>;
 
 export type ElementOf<C extends ComponentLike> = C extends Constructor<
   Invokable<(...args: any) => AcceptsBlocks<any, infer Element>>

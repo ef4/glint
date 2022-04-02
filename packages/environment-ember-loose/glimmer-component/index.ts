@@ -5,7 +5,7 @@ import type {
   AcceptsBlocks,
   EmptyObject,
 } from '@glint/template/-private/integration';
-import { StaticSide } from '../-private/utilities';
+import { StaticSide, WithoutGlintIntegration } from '../-private/utilities';
 
 import type { ComponentSignature } from '../-private';
 export type { ComponentSignature };
@@ -32,7 +32,8 @@ type ComponentConstructor = {
 const Component = GlimmerComponent as unknown as StaticSide<GlimmerComponentConstructor> &
   ComponentConstructor;
 
-interface Component<T extends ComponentSignature = {}> extends GlimmerComponent<Get<T, 'Args'>> {
+interface Component<T extends ComponentSignature = {}>
+  extends WithoutGlintIntegration<GlimmerComponent<Get<T, 'Args'>>> {
   // Allows `extends Component<infer Signature>` clauses to work as expected
   [GivenSignature]: T;
 

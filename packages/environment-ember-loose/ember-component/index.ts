@@ -7,7 +7,7 @@ import type {
   EmptyObject,
 } from '@glint/template/-private/integration';
 
-import type { StaticSide } from '../-private/utilities';
+import type { StaticSide, WithoutGlintIntegration } from '../-private/utilities';
 import type { ComponentSignature } from '../-private';
 
 export type { ComponentSignature };
@@ -37,7 +37,8 @@ type ComponentConstructor = {
 const Component = EmberComponent as unknown as StaticSide<typeof EmberComponent> &
   ComponentConstructor;
 
-interface Component<T extends ComponentSignature = {}> extends EmberComponent {
+interface Component<T extends ComponentSignature = {}>
+  extends WithoutGlintIntegration<EmberComponent> {
   // Allows `extends Component<infer Signature>` clauses to work as expected
   [GivenSignature]: T;
 
