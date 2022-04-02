@@ -16,6 +16,7 @@ export type DirectInvokable<T extends AnyFunction = AnyFunction> = { [InvokeDire
 
 export declare const Invoke: unique symbol;
 export type Invokable<T extends AnyFunction = AnyFunction> = { [Invoke]: T };
+export type OpaqueInvokable<T extends AnyFunction = AnyFunction> = new (key: never) => Invokable<T>;
 
 export declare const Context: unique symbol;
 export type HasContext<T extends AnyContext = AnyContext> = { [Context]: T };
