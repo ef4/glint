@@ -1,5 +1,6 @@
-import UpstreamEmberComponent from '@ember/component';
-import Component, { ArgsFor } from '@glint/environment-ember-loose/ember-component';
+import '@glint/environment-ember-loose/native-integration';
+import { ArgsFor } from '@glint/environment-ember-loose/ember-component';
+import Component from '@ember/component';
 import {
   template,
   resolve,
@@ -7,11 +8,8 @@ import {
   yieldToBlock,
   emitComponent,
 } from '@glint/environment-ember-loose/-private/dsl';
-import { EmptyObject } from '@glint/template/-private/integration';
 import { expectTypeOf } from 'expect-type';
-
-// Our `Component` reexport should inherit static members
-expectTypeOf(Component.extend).toEqualTypeOf(UpstreamEmberComponent.extend);
+import { EmptyObject } from '@glimmer/component/dist/types/addon/-private/component';
 
 {
   class NoArgsComponent extends Component {
@@ -62,9 +60,9 @@ expectTypeOf(Component.extend).toEqualTypeOf(UpstreamEmberComponent.extend);
     Args: {
       values: Array<T>;
     };
-    Yields: {
+    Blocks: {
       default: [T];
-      else?: [];
+      else: [];
     };
   }
 
@@ -124,8 +122,10 @@ expectTypeOf(Component.extend).toEqualTypeOf(UpstreamEmberComponent.extend);
 
 {
   interface PositionalArgsComponentSignature {
-    Args: { key?: string };
-    PositionalArgs: [name: string, age?: number];
+    Args: {
+      Named: { key?: string };
+      Positional: [name: string, age?: number];
+    };
   }
 
   interface PositionalArgsComponent extends ArgsFor<PositionalArgsComponentSignature> {}

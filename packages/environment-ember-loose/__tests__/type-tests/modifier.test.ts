@@ -1,4 +1,5 @@
-import Modifier, { modifier } from '@glint/environment-ember-loose/ember-modifier';
+import '@glint/environment-ember-loose/native-integration';
+import Modifier, { modifier } from 'ember-modifier';
 import { resolve } from '@glint/environment-ember-loose/-private/dsl';
 import { expectTypeOf } from 'expect-type';
 import { BoundModifier } from '@glint/template/-private/integration';
@@ -6,8 +7,10 @@ import { BoundModifier } from '@glint/template/-private/integration';
 // Class-based modifier
 {
   interface NeatModifierSignature {
-    NamedArgs: { multiplier?: number };
-    PositionalArgs: [input: string];
+    Args: {
+      Named: { multiplier?: number };
+      Positional: [input: string];
+    };
     Element: HTMLImageElement;
   }
 

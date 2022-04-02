@@ -1,13 +1,15 @@
-import templateOnlyComponent from '@glint/environment-ember-loose/ember-component/template-only';
+import '@glint/environment-ember-loose/native-integration';
+import templateOnlyComponent from '@ember/component/template-only';
 import {
   template,
   resolve,
   ResolveContext,
   emitComponent,
 } from '@glint/environment-ember-loose/-private/dsl';
-import { AcceptsBlocks, EmptyObject } from '@glint/template/-private/integration';
+import { AcceptsBlocks } from '@glint/template/-private/integration';
 import { expectTypeOf } from 'expect-type';
 import { ComponentKeyword } from '../../-private/intrinsics/component';
+import { EmptyObject } from '@glimmer/component/dist/types/addon/-private/component';
 
 {
   const NoArgsComponent = templateOnlyComponent();
@@ -48,9 +50,9 @@ import { ComponentKeyword } from '../../-private/intrinsics/component';
     Args: {
       values: Array<number>;
     };
-    Yields: {
+    Blocks: {
       default: [number];
-      else?: [];
+      else: [];
     };
   }
 
@@ -96,7 +98,7 @@ import { ComponentKeyword } from '../../-private/intrinsics/component';
     expectTypeOf(𝚪.this).toBeVoid();
     expectTypeOf(𝚪.args).toEqualTypeOf<YieldingComponentSignature['Args']>();
     expectTypeOf(𝚪.element).toEqualTypeOf<YieldingComponentSignature['Element']>();
-    expectTypeOf(𝚪.yields).toEqualTypeOf<YieldingComponentSignature['Yields']>();
+    expectTypeOf(𝚪.yields).toEqualTypeOf<YieldingComponentSignature['Blocks']>();
   });
 }
 
